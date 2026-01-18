@@ -10,9 +10,10 @@
         </div>
         <div class="progress-text">{{ store.progress }}% completed</div>
       </div>
-
       <div class="voice-interface">
         <div class="voice-orb">
+          <div class="orb-ring medium"></div>
+          <div class="orb-ring small"></div>
           <div class="orb-glow"></div>
           <div class="orb-core">
             <VoiceWaveIcon />
@@ -207,7 +208,7 @@ const goToResults = () => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 124px);
+  height: calc(100vh - 120px);
 }
 
 .interview-content {
@@ -221,14 +222,18 @@ const goToResults = () => {
 }
 
 .progress-section {
+  position: relative;
+  z-index: 10;
   margin-bottom: 40px;
   flex-shrink: 0;
 }
 
 .progress-bar {
   width: 100%;
+  max-width: 744px;
+  margin: 0 auto;
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #094d52;
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -264,7 +269,7 @@ const goToResults = () => {
   height: 188px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .orb-glow {
@@ -302,6 +307,29 @@ const goToResults = () => {
   justify-content: center;
   box-shadow: 0 0 60px rgba(22, 165, 150, 0.6);
   z-index: 1;
+}
+
+.orb-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ffffff08;
+  border: 2px solid #d3d0d033;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb-ring.medium {
+  width: 846px;
+  height: 846px;
+  opacity: 30%;
+}
+.orb-ring.small {
+  width: 460px;
+  height: 460px;
+  opacity: 60%;
 }
 
 .btn-talk {
@@ -470,6 +498,11 @@ const goToResults = () => {
     height: 100px;
   }
 
+  .orb-ring {
+    width: 380px;
+    height: 380px;
+  }
+
   .question-header h2 {
     font-size: 24px;
     line-height: 32px;
@@ -489,7 +522,7 @@ const goToResults = () => {
 @media (max-width: 768px) {
   .interview-container {
     height: auto;
-    min-height: calc(100vh - 124px);
+    min-height: calc(100vh - 120px);
   }
 
   .interview-content {
@@ -516,6 +549,11 @@ const goToResults = () => {
   .orb-core {
     width: 90px;
     height: 90px;
+  }
+
+  .orb-ring {
+    width: 320px;
+    height: 320px;
   }
 
   .btn-talk {

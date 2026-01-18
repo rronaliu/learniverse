@@ -16,7 +16,7 @@
 
     <div class="main-nav">
       <div class="main-nav--links">
-        <div class="logo">
+        <div class="logo" @click="goHome">
           <LogoIcon />
           <span>learniverse</span>
         </div>
@@ -33,8 +33,10 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import LogoIcon from "./icons/LogoIcon.vue";
 
+const router = useRouter();
 const isMenuOpen = ref(false);
 
 const toggleMenu = () => {
@@ -43,6 +45,10 @@ const toggleMenu = () => {
 
 const closeMenu = () => {
   isMenuOpen.value = false;
+};
+
+const goHome = () => {
+  router.push("/");
 };
 </script>
 
@@ -147,6 +153,7 @@ const closeMenu = () => {
   font-size: 20px;
   font-weight: 600;
   margin-right: 2rem;
+  cursor: pointer;
 }
 
 .nav-links {

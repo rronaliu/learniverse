@@ -110,6 +110,7 @@ const store = useInterviewStore();
 const showQuestionNumber = ref(false);
 const showQuestionText = ref(false);
 const showAnswer = ref(false);
+const localAnswer = ref("");
 
 const { isSupported, isListening, result, start, stop } = useSpeechRecognition({
   continuous: true,
@@ -117,8 +118,8 @@ const { isSupported, isListening, result, start, stop } = useSpeechRecognition({
 });
 
 const displayAnswer = computed(() => {
-  if (isListening.value && result.value) {
-    store.saveUserAnswer(store.currentQuestionIndex, result.value);
+  if (localAnswer.value) {
+    return localAnswer.value;
   }
   const question = store.getUserAnswer(store.currentQuestionIndex);
   if (question && question.answer) {
@@ -127,14 +128,38 @@ const displayAnswer = computed(() => {
   return store.currentQuestion.answer || "";
 });
 
+const resetAndShowSequentially = () => {
+  showQuestionNumber.value = false;
+  showQuestionText.value = false;
+  showAnswer.value = false;
+
+  setTimeout(() => {
+    showQuestionNumber.value = true;
+  }, 0);
+  setTimeout(() => {
+    showQuestionText.value = true;
+  }, 500);
+  setTimeout(() => {
+    showAnswer.value = true;
+  }, 1000);
+};
+
+watch(result, newValue => {
+  if (isListening.value && newValue) {
+    localAnswer.value = newValue;
+  }
+});
+
 watch(
   () => store.currentQuestionIndex,
   () => {
+    localAnswer.value = "";
     if (isListening.value) {
       stop();
     }
     resetAndShowSequentially();
-  }
+  },
+  { immediate: true }
 );
 
 const toggleRecording = () => {
@@ -154,34 +179,14 @@ const toggleRecording = () => {
   }
 };
 
-const resetAndShowSequentially = () => {
-  showQuestionNumber.value = false;
-  showQuestionText.value = false;
-  showAnswer.value = false;
-
-  setTimeout(() => {
-    showQuestionNumber.value = true;
-  }, 0);
-  setTimeout(() => {
-    showQuestionText.value = true;
-  }, 500);
-  setTimeout(() => {
-    showAnswer.value = true;
-  }, 1000);
-};
-
-watch(
-  () => store.currentQuestionIndex,
-  () => {
-    resetAndShowSequentially();
-  },
-  { immediate: true }
-);
-
 const handleContinue = () => {
   if (isListening.value) {
     stop();
   }
+  if (localAnswer.value) {
+    store.saveUserAnswer(store.currentQuestionIndex, localAnswer.value);
+  }
+
   store.nextQuestion();
 };
 

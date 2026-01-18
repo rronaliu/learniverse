@@ -2,7 +2,10 @@
   <div class="interview-container">
     <div class="interview-content">
       <div class="progress-section">
-        <div class="progress-bar">
+        <div
+          class="progress-bar"
+          :style="{ '--progress': store.progress + '%' }"
+        >
           <div
             class="progress-fill"
             :style="{ width: store.progress + '%' }"
@@ -235,8 +238,25 @@ const goToResults = () => {
   height: 8px;
   background: #094d52;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 12px;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--progress, 0%) - 22px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #76f8ff;
+  filter: blur(25px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  transition: left 0.5s ease;
 }
 
 .progress-fill {

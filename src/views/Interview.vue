@@ -366,24 +366,6 @@ const goToResults = () => {
   }
 }
 
-.recording-hint {
-  color: #ef4444;
-  font-size: 14px;
-  margin: 8px 0 0 0;
-  font-weight: 600;
-  animation: blink 1.5s ease-in-out infinite;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
 .question-header h2 {
   font-size: 30px;
   font-weight: 500;
@@ -498,11 +480,6 @@ const goToResults = () => {
     height: 100px;
   }
 
-  .orb-ring {
-    width: 380px;
-    height: 380px;
-  }
-
   .question-header h2 {
     font-size: 24px;
     line-height: 32px;
@@ -551,11 +528,6 @@ const goToResults = () => {
     height: 90px;
   }
 
-  .orb-ring {
-    width: 320px;
-    height: 320px;
-  }
-
   .btn-talk {
     padding: 12px 24px;
     font-size: 14px;
@@ -574,10 +546,6 @@ const goToResults = () => {
   .answer-box p {
     font-size: 15px;
     line-height: 1.6;
-  }
-
-  .recording-hint {
-    font-size: 12px;
   }
 
   .navigation-buttons {

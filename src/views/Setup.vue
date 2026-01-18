@@ -126,7 +126,7 @@ const handleModalConfirm = () => {
 <style scoped>
 .setup-container {
   display: flex;
-  height: calc(100vh - 137px);
+  height: calc(100vh - 120px);
 }
 
 .sidebar {

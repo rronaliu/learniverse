@@ -34,13 +34,13 @@
 import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
 
 const handleShare = () => {
-  console.log('Share results')
-}
+  console.log("Share results");
+};
 </script>
 
 <style scoped>
 .results-container {
-  height: calc(100vh - 137px);
+  height: calc(100vh - 120px);
   background: linear-gradient(135deg, #1a1a1a 0%, #2d4a4a 100%);
   color: white;
   overflow-y: auto;

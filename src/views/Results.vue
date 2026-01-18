@@ -134,4 +134,52 @@ h1 {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
 }
+
+@media (max-width: 768px) {
+  .results-content {
+    padding: 48px 16px;
+  }
+
+  h1 {
+    font-size: 36px;
+    margin-bottom: 32px;
+  }
+
+  .score-section {
+    margin-bottom: 48px;
+  }
+
+  .score-badge {
+    font-size: 22px;
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .badge-icon {
+    font-size: 48px;
+  }
+
+  .advice-section {
+    margin-bottom: 32px;
+  }
+
+  .advice-section h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .advice-list li {
+    font-size: 16px;
+    padding-left: 32px;
+    margin-bottom: 12px;
+  }
+
+  .btn-share {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+}
 </style>

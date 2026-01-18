@@ -302,4 +302,83 @@ h1 {
 .btn-generate:hover {
   background: #333;
 }
+
+@media (max-width: 1024px) {
+  .setup-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 32px 24px;
+  }
+
+  .main-content {
+    padding: 32px 24px;
+  }
+
+  .content-wrapper {
+    width: 100%;
+  }
+
+  .form-section {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .btn-generate {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    padding: 24px 16px;
+  }
+
+  .sidebar-header h3 {
+    font-size: 18px;
+  }
+
+  .time-badge {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .steps {
+    margin-top: 32px;
+    gap: 24px;
+  }
+
+  .step-content h4 {
+    font-size: 14px;
+  }
+
+  .step-content p {
+    font-size: 14px;
+  }
+
+  .main-content {
+    padding: 24px 16px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .note {
+    font-size: 14px;
+  }
+}
 </style>

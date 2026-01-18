@@ -132,4 +132,25 @@ const confirm = () => emit('confirm')
 .modal-leave-to {
   opacity: 0;
 }
+
+@media (max-width: 768px) {
+  .modal-container {
+    padding: 24px;
+    max-width: 90%;
+    margin: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    font-size: 15px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}
 </style>

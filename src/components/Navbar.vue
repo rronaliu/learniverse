@@ -1,10 +1,17 @@
 <template>
   <header class="navbar">
     <div class="top-nav">
-      <button class="nav-pill">For Learners</button>
-      <button class="nav-pill">For Trainers</button>
-      <button class="nav-pill active">For Companies</button>
-      <button class="nav-pill">For Universities</button>
+      <button class="hamburger" @click="toggleMenu" :class="{ active: isMenuOpen }">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-pills" :class="{ open: isMenuOpen }">
+        <button class="nav-pill" @click="closeMenu">For Learners</button>
+        <button class="nav-pill" @click="closeMenu">For Trainers</button>
+        <button class="nav-pill active" @click="closeMenu">For Companies</button>
+        <button class="nav-pill" @click="closeMenu">For Universities</button>
+      </div>
     </div>
 
     <div class="main-nav">
@@ -25,7 +32,18 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import LogoIcon from "./icons/LogoIcon.vue";
+
+const isMenuOpen = ref(false);
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
 </script>
 
 <style scoped>
@@ -38,11 +56,50 @@ import LogoIcon from "./icons/LogoIcon.vue";
 }
 
 .top-nav {
+  position: relative;
   display: flex;
   gap: 8px;
   padding: 8px 42px;
   background: #031a1b;
   height: 52px;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.nav-pills {
+  display: flex;
+  gap: 8px;
 }
 
 .nav-pill {
@@ -120,5 +177,76 @@ import LogoIcon from "./icons/LogoIcon.vue";
 .btn-login:hover {
   background: #1a1a1a;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 8px 16px;
+    height: auto;
+    min-height: 52px;
+  }
+
+  .hamburger {
+    display: flex;
+    align-self: center;
+  }
+
+  .nav-pills {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #031a1b;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-pills.open {
+    max-height: 300px;
+    padding: 8px 0;
+  }
+
+  .nav-pill {
+    padding: 12px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .nav-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-pill.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+
+  .main-nav {
+    padding: 16px 20px;
+    height: auto;
+  }
+
+  .logo {
+    font-size: 18px;
+    margin-right: 1rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .btn-login {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
 }
 </style>

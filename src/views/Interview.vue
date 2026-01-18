@@ -117,11 +117,11 @@ const { isSupported, isListening, result, start, stop } = useSpeechRecognition({
 
 const displayAnswer = computed(() => {
   if (isListening.value && result.value) {
-    return result.value;
+    store.saveUserAnswer(store.currentQuestionIndex, result.value);
   }
-  const savedAnswer = store.getUserAnswer(store.currentQuestionIndex);
-  if (savedAnswer) {
-    return savedAnswer;
+  const question = store.getUserAnswer(store.currentQuestionIndex);
+  if (question && question.answer) {
+    return question.answer;
   }
   return store.currentQuestion.answer || "";
 });
@@ -148,9 +148,6 @@ const toggleRecording = () => {
 
   if (isListening.value) {
     stop();
-    if (result.value) {
-      store.saveUserAnswer(store.currentQuestionIndex, result.value);
-    }
   } else {
     start();
   }
@@ -183,9 +180,6 @@ watch(
 const handleContinue = () => {
   if (isListening.value) {
     stop();
-    if (result.value) {
-      store.saveUserAnswer(store.currentQuestionIndex, result.value);
-    }
   }
   store.nextQuestion();
 };

@@ -30,7 +30,6 @@ export const useInterviewStore = defineStore("interview", {
           "I start by defining the objective and target audience. Then I build a plan around location, timing, partnerships, and messaging. I coordinate closely with sales to ensure our field goals align with pipeline targets. Finally, I prepare detailed timelines, vendor checklists, and a feedback plan for post-event analysis."
       }
     ],
-    userAnswers: {},
     showModal: false
   }),
   getters: {
@@ -41,7 +40,8 @@ export const useInterviewStore = defineStore("interview", {
       ),
     isFirstQuestion: state => state.currentQuestionIndex === 0,
     isLastQuestion: state =>
-      state.currentQuestionIndex === state.questions.length - 1
+      state.currentQuestionIndex === state.questions.length - 1,
+    getUserAnswers: state => state.questions
   },
   actions: {
     nextQuestion() {
@@ -62,10 +62,12 @@ export const useInterviewStore = defineStore("interview", {
       this.showModal = !this.showModal;
     },
     saveUserAnswer(questionIndex, answer) {
-      this.userAnswers[questionIndex] = answer;
+      if (this.questions[questionIndex].answer) {
+        this.questions[questionIndex].answer = answer;
+      }
     },
     getUserAnswer(questionIndex) {
-      return this.userAnswers[questionIndex];
+      return this.questions[questionIndex];
     }
   }
 });

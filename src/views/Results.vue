@@ -27,15 +27,52 @@
         </button>
       </div>
     </div>
+
+    <Modal
+      :show="showModal"
+      title="Your Interview Answers"
+      confirm-text="Close"
+      @close="toggleModal"
+      @confirm="toggleModal"
+    >
+      <div class="answers-list">
+        <div
+          v-for="question in answeredQuestions"
+          :key="question.id"
+          class="answer-item"
+        >
+          <h4>Question {{ question.id }}:</h4>
+          <p class="question-text">{{ question.question }}</p>
+          <p class="user-answer">{{ question.answer }}</p>
+        </div>
+        <p v-if="answeredQuestions.length === 0" class="no-answers">
+          No answers recorded yet.
+        </p>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+import { useInterviewStore } from "../stores/interview";
+import Modal from "../components/Modal.vue";
 import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
 
-const handleShare = () => {
-  console.log("Share results");
+const store = useInterviewStore();
+const showModal = ref(false);
+
+const toggleModal = () => {
+  showModal.value = !showModal.value;
 };
+
+const handleShare = () => {
+  toggleModal();
+};
+
+const answeredQuestions = computed(() => {
+  return store.questions.filter(q => q.id !== 0 && q.answer);
+});
 </script>
 
 <style scoped>
@@ -133,6 +170,52 @@ h1 {
 .btn-share:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+.answers-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.answer-item {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.answer-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.answer-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.question-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+  font-style: italic;
+}
+
+.user-answer {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.no-answers {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  padding: 20px 0;
+  margin: 0;
 }
 
 @media (max-width: 768px) {

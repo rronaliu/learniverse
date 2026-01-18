@@ -1,27 +1,54 @@
 <template>
   <header class="navbar">
     <div class="top-nav">
-      <button class="hamburger" @click="toggleMenu" :class="{ active: isMenuOpen }">
+      <button
+        class="hamburger"
+        @click="toggleMenu"
+        :class="{ active: isMenuOpen }"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
       <div class="nav-pills" :class="{ open: isMenuOpen }">
-        <button class="nav-pill" @click="closeMenu">For Learners</button>
-        <button class="nav-pill" @click="closeMenu">For Trainers</button>
-        <button class="nav-pill active" @click="closeMenu">For Companies</button>
-        <button class="nav-pill" @click="closeMenu">For Universities</button>
+        <button
+          class="nav-pill"
+          @click="handleClickPill"
+          :class="{ active: activePill == 'For Learners' }"
+        >
+          For Learners
+        </button>
+        <button
+          class="nav-pill"
+          @click="handleClickPill"
+          :class="{ active: activePill == 'For Trainers' }"
+        >
+          For Trainers
+        </button>
+        <button
+          class="nav-pill"
+          :class="{ active: activePill == 'For Companies' }"
+          @click="handleClickPill"
+        >
+          For Companies
+        </button>
+        <button
+          class="nav-pill"
+          @click="handleClickPill"
+          :class="{ active: activePill == 'For Universities' }"
+        >
+          For Universities
+        </button>
       </div>
     </div>
 
     <div class="main-nav">
       <div class="main-nav--links">
         <div class="logo" @click="goHome">
-          <LogoIcon />
-          <span>learniverse</span>
+          <img src="/logo.png" />
         </div>
         <div class="nav-links">
-          <a href="#">Solutions</a>
+          <a href="#">Solutions <ChevronDownIcon /></a>
           <a href="#">Plans</a>
           <a href="#">Why Learniverse?</a>
         </div>
@@ -34,16 +61,18 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import LogoIcon from "./icons/LogoIcon.vue";
+import ChevronDownIcon from "./icons/ChevronDownIcon.vue";
 
 const router = useRouter();
 const isMenuOpen = ref(false);
+const activePill = ref("For Companies");
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const closeMenu = () => {
+const handleClickPill = e => {
+  activePill.value = e.target.innerText || "For Companies";
   isMenuOpen.value = false;
 };
 
@@ -105,21 +134,22 @@ const goHome = () => {
 
 .nav-pills {
   display: flex;
-  gap: 8px;
+  gap: 4px;
+  padding: 4px 16px;
 }
 
 .nav-pill {
-  padding: 4px 16px;
+  padding: 2px 16px;
   border: 1px solid transparent;
   background: transparent;
   border-color: #e0e0e0;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
   color: white;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .nav-pill.active {
@@ -158,6 +188,7 @@ const goHome = () => {
 
 .nav-links {
   display: flex;
+  vertical-align: middle;
   gap: 32px;
 }
 
@@ -170,6 +201,17 @@ const goHome = () => {
 
 .nav-links a:hover {
   color: #16a596;
+}
+
+.nav-links a:first-child {
+  display: flex;
+  align-content: flex-end;
+  justify-content: space-between;
+}
+
+.nav-links a:first-child svg {
+  transform: scale(0.8);
+  margin: 1px 0 0 10px;
 }
 
 .btn-login {
@@ -254,6 +296,10 @@ const goHome = () => {
   .btn-login {
     padding: 8px 16px;
     font-size: 14px;
+  }
+
+  .chev-down {
+    filter: scale(0.5);
   }
 }
 </style>

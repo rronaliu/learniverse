@@ -272,11 +272,7 @@ const goToResults = () => {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(22, 165, 150, 0.4) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, #76f8ff49 0%, transparent 60%);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -296,12 +292,39 @@ const goToResults = () => {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #16a596 0%, #4dd4c5 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 60px rgba(22, 165, 150, 0.6);
+  position: relative;
   z-index: 1;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 60px rgba(22, 165, 150, 0.6);
+}
+
+.orb-core svg {
+  transform: scale(0.8);
+  margin-bottom: 1rem;
+}
+
+.orb-core::before {
+  content: "";
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  background: conic-gradient(
+    from -45deg at center,
+    #0f8188,
+    #ffffff,
+    #8998fb,
+    #76f8ff,
+    #ffffff,
+    #0c676d
+  );
+  filter: blur(10px);
+  z-index: -1;
 }
 
 .btn-talk {
@@ -371,7 +394,7 @@ const goToResults = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 28px;
+  padding: 8px 16px;
   border: none;
   border-radius: 12px;
   font-size: 16px;
@@ -523,11 +546,6 @@ const goToResults = () => {
   .navigation-buttons {
     flex-wrap: wrap;
     gap: 12px;
-  }
-
-  .btn-nav {
-    padding: 12px 20px;
-    font-size: 14px;
   }
 
   .btn-prev {

@@ -24,7 +24,7 @@
 
         <button class="btn-share" @click="handleShare">
           Share Results
-          <ChevronRightIcon />
+          <ArrowUpRight />
         </button>
       </div>
     </div>
@@ -58,7 +58,7 @@
 import { ref, computed } from "vue";
 import { useInterviewStore } from "../stores/interview";
 import Modal from "../components/Modal.vue";
-import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
+import ArrowUpRight from "../components/icons/ArrowUpRight.vue";
 import OrbRing from "../components/OrbRing.vue";
 
 const store = useInterviewStore();
@@ -165,7 +165,7 @@ h1 {
   background: white;
   color: #1a1a1a;
   border: none;
-  padding: 16px 32px;
+  padding: 8px 16px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 600;

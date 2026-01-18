@@ -286,10 +286,10 @@ h1 {
   background: #1a1a1a;
   color: white;
   border: none;
-  padding: 16px;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
+  padding: 8px 16px;
   cursor: pointer;
   transition: background 0.3s;
 }

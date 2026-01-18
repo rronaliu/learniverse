@@ -4,6 +4,7 @@
       <div class="progress-section">
         <div
           class="progress-bar"
+          :class="{ 'has-progress': store.progress > 0 }"
           :style="{ '--progress': store.progress + '%' }"
         >
           <div
@@ -235,15 +236,15 @@ const goToResults = () => {
   width: 100%;
   max-width: 744px;
   margin: 0 auto;
-  height: 8px;
+  height: 13px;
   background: #094d52;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: visible;
   margin-bottom: 12px;
   position: relative;
 }
 
-.progress-bar::after {
+.progress-bar.has-progress::after {
   content: "";
   position: absolute;
   left: calc(var(--progress, 0%) - 22px);
@@ -263,7 +264,7 @@ const goToResults = () => {
   height: 100%;
   background: linear-gradient(90deg, #16a596 0%, #4dd4c5 100%);
   transition: width 0.5s ease;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .progress-text {

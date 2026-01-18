@@ -18,7 +18,14 @@
             <VoiceWaveIcon />
           </div>
         </div>
-        <button class="btn-talk">Talk To Answers</button>
+        <button
+          class="btn-talk"
+          @click="toggleRecording"
+          :style="store.isFirstQuestion ? 'visibility: hidden' : ''"
+          :class="{ recording: isListening }"
+        >
+          {{ isListening ? "Stop Recording" : "Talk To Answer" }}
+        </button>
       </div>
 
       <div class="question-section">
@@ -40,14 +47,14 @@
 
         <transition name="fade-slide">
           <div v-if="showAnswer">
-            <div class="answer-box">
-              <p>{{ store.currentQuestion.answer }}</p>
+            <div class="answer-box" v-if="!store.isFirstQuestion">
+              <p>{{ displayAnswer }}</p>
             </div>
 
             <div class="navigation-buttons">
               <button
                 v-if="store.isFirstQuestion"
-                class="btn-nav btn-next"
+                class="btn-nav btn-next btn-next--first"
                 @click="store.nextQuestion"
               >
                 <ChevronRightIcon />
@@ -65,7 +72,7 @@
               <button
                 v-if="!store.isFirstQuestion && !store.isLastQuestion"
                 class="btn-nav btn-next"
-                @click="store.nextQuestion"
+                @click="handleContinue"
               >
                 Continue
                 <ChevronRightIcon />
@@ -87,8 +94,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useSpeechRecognition } from "@vueuse/core";
 import { useInterviewStore } from "../stores/interview";
 import VoiceWaveIcon from "../components/icons/VoiceWaveIcon.vue";
 import ChevronLeftIcon from "../components/icons/ChevronLeftIcon.vue";
@@ -100,6 +108,52 @@ const store = useInterviewStore();
 const showQuestionNumber = ref(false);
 const showQuestionText = ref(false);
 const showAnswer = ref(false);
+
+const { isSupported, isListening, result, start, stop } = useSpeechRecognition({
+  continuous: true,
+  interimResults: true
+});
+
+const displayAnswer = computed(() => {
+  if (isListening.value && result.value) {
+    return result.value;
+  }
+  const savedAnswer = store.getUserAnswer(store.currentQuestionIndex);
+  if (savedAnswer) {
+    return savedAnswer;
+  }
+  return store.currentQuestion.answer || "";
+});
+
+watch(
+  () => store.currentQuestionIndex,
+  () => {
+    if (isListening.value) {
+      stop();
+    }
+    resetAndShowSequentially();
+  }
+);
+
+const toggleRecording = () => {
+  if (!isSupported.value) {
+    alert("Speech recognition is not supported in your browser.");
+    return;
+  }
+
+  if (store.isFirstQuestion) {
+    return;
+  }
+
+  if (isListening.value) {
+    stop();
+    if (result.value) {
+      store.saveUserAnswer(store.currentQuestionIndex, result.value);
+    }
+  } else {
+    start();
+  }
+};
 
 const resetAndShowSequentially = () => {
   showQuestionNumber.value = false;
@@ -125,7 +179,23 @@ watch(
   { immediate: true }
 );
 
+const handleContinue = () => {
+  if (isListening.value) {
+    stop();
+    if (result.value) {
+      store.saveUserAnswer(store.currentQuestionIndex, result.value);
+    }
+  }
+  store.nextQuestion();
+};
+
 const goToResults = () => {
+  if (isListening.value) {
+    stop();
+    if (result.value && !store.isFirstQuestion) {
+      store.saveUserAnswer(store.currentQuestionIndex, result.value);
+    }
+  }
   router.push("/results");
 };
 </script>
@@ -252,6 +322,40 @@ const goToResults = () => {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+.btn-talk.recording {
+  background: #ef4444;
+  border-color: #ef4444;
+  animation: pulse-red 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-red {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+.recording-hint {
+  color: #ef4444;
+  font-size: 14px;
+  margin: 8px 0 0 0;
+  font-weight: 600;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .question-header h2 {
   font-size: 30px;
   font-weight: 500;
@@ -313,6 +417,10 @@ const goToResults = () => {
   background: #fef2f2;
   color: #292d35;
   padding: 8px 16px;
+}
+
+.btn-next--first {
+  margin-top: 2rem;
 }
 
 .btn-next:hover,
@@ -428,6 +536,10 @@ const goToResults = () => {
   .answer-box p {
     font-size: 15px;
     line-height: 1.6;
+  }
+
+  .recording-hint {
+    font-size: 12px;
   }
 
   .navigation-buttons {

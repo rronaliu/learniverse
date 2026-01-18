@@ -21,7 +21,7 @@ export const useInterviewStore = defineStore("interview", {
         question:
           "How do you measure the success of a field marketing campaign?",
         answer:
-          "Success depends on the campaign’s goal. For awareness campaigns, I track engagement, attendance, and social mentions. For lead generation, I look at lead volume, quality, and conversion rate. I also compare post-event sales data and customer feedback to measure overall impact."
+          "Success depends on the campaign's goal. For awareness campaigns, I track engagement, attendance, and social mentions. For lead generation, I look at lead volume, quality, and conversion rate. I also compare post-event sales data and customer feedback to measure overall impact."
       },
       {
         id: 3,
@@ -30,6 +30,7 @@ export const useInterviewStore = defineStore("interview", {
           "I start by defining the objective and target audience. Then I build a plan around location, timing, partnerships, and messaging. I coordinate closely with sales to ensure our field goals align with pipeline targets. Finally, I prepare detailed timelines, vendor checklists, and a feedback plan for post-event analysis."
       }
     ],
+    userAnswers: {},
     showModal: false
   }),
   getters: {
@@ -55,9 +56,16 @@ export const useInterviewStore = defineStore("interview", {
     },
     resetInterview() {
       this.currentQuestionIndex = 0;
+      this.userAnswers = {};
     },
     toggleModal() {
       this.showModal = !this.showModal;
+    },
+    saveUserAnswer(questionIndex, answer) {
+      this.userAnswers[questionIndex] = answer;
+    },
+    getUserAnswer(questionIndex) {
+      return this.userAnswers[questionIndex];
     }
   }
 });

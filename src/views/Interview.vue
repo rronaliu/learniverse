@@ -1,0 +1,343 @@
+<template>
+  <div class="interview-container">
+    <div class="interview-content">
+      <div class="progress-section">
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            :style="{ width: store.progress + '%' }"
+          ></div>
+        </div>
+        <div class="progress-text">{{ store.progress }}% completed</div>
+      </div>
+
+      <div class="voice-interface">
+        <div class="voice-orb">
+          <div class="orb-glow"></div>
+          <div class="orb-core">
+            <VoiceWaveIcon />
+          </div>
+        </div>
+        <button class="btn-talk">Talk To Answers</button>
+      </div>
+
+      <div class="question-section">
+        <div class="question-header">
+          <transition name="fade-slide">
+            <h2
+              v-if="!store.isFirstQuestion && showQuestionNumber"
+              class="question-number"
+            >
+              Question {{ store.currentQuestionIndex + 1 }}:
+            </h2>
+          </transition>
+          <transition name="fade-slide">
+            <h2 v-if="showQuestionText" class="question-text">
+              {{ store.currentQuestion.question }}
+            </h2>
+          </transition>
+        </div>
+
+        <transition name="fade-slide">
+          <div v-if="showAnswer">
+            <div class="answer-box">
+              <p>{{ store.currentQuestion.answer }}</p>
+            </div>
+
+            <div class="navigation-buttons">
+              <button
+                v-if="store.isFirstQuestion"
+                class="btn-nav btn-next"
+                @click="store.nextQuestion"
+              >
+                <ChevronRightIcon />
+                Continue
+              </button>
+              <button
+                v-if="!store.isFirstQuestion"
+                class="btn-nav btn-prev"
+                @click="store.previousQuestion"
+                :disabled="store.isFirstQuestion"
+              >
+                <ChevronLeftIcon />
+                Previous
+              </button>
+              <button
+                v-if="!store.isFirstQuestion && !store.isLastQuestion"
+                class="btn-nav btn-next"
+                @click="store.nextQuestion"
+              >
+                Continue
+                <ChevronRightIcon />
+              </button>
+              <button
+                v-else-if="!store.isFirstQuestion"
+                class="btn-nav btn-submit"
+                @click="goToResults"
+              >
+                Submit
+                <ChevronRightIcon />
+              </button>
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useInterviewStore } from "../stores/interview";
+import VoiceWaveIcon from "../components/icons/VoiceWaveIcon.vue";
+import ChevronLeftIcon from "../components/icons/ChevronLeftIcon.vue";
+import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
+
+const router = useRouter();
+const store = useInterviewStore();
+
+const showQuestionNumber = ref(false);
+const showQuestionText = ref(false);
+const showAnswer = ref(false);
+
+const resetAndShowSequentially = () => {
+  showQuestionNumber.value = false;
+  showQuestionText.value = false;
+  showAnswer.value = false;
+
+  setTimeout(() => {
+    showQuestionNumber.value = true;
+  }, 0);
+  setTimeout(() => {
+    showQuestionText.value = true;
+  }, 500);
+  setTimeout(() => {
+    showAnswer.value = true;
+  }, 1000);
+};
+
+watch(
+  () => store.currentQuestionIndex,
+  () => {
+    resetAndShowSequentially();
+  },
+  { immediate: true }
+);
+
+const goToResults = () => {
+  router.push("/results");
+};
+</script>
+
+<style scoped>
+.interview-container {
+  background: linear-gradient(135deg, #0f0f0f 50%, #6fb3b8 100%);
+  color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 124px);
+}
+
+.interview-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-section {
+  margin-bottom: 40px;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a596 0%, #4dd4c5 100%);
+  transition: width 0.5s ease;
+  border-radius: 4px;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.voice-interface {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 40px;
+  margin-left: 20%;
+}
+
+.voice-orb {
+  position: relative;
+  width: 188px;
+  height: 188px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.orb-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(22, 165, 150, 0.4) 0%,
+    transparent 70%
+  );
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.orb-core {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #16a596 0%, #4dd4c5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 60px rgba(22, 165, 150, 0.6);
+  z-index: 1;
+}
+
+.btn-talk {
+  background: #ffffff;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255);
+  color: #0f0f0f;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-talk:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.question-header h2 {
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  line-height: 38px;
+  width: 75%;
+}
+
+.answer-box {
+  border-radius: 16px;
+  padding: 24px 0;
+  margin-bottom: 44px;
+  width: 90%;
+  margin-left: auto;
+}
+
+.answer-box p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.btn-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-prev {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.btn-prev:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-prev:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-next,
+.btn-submit {
+  background: #fef2f2;
+  color: #292d35;
+  padding: 8px 16px;
+}
+
+.btn-next:hover,
+.btn-submit:hover {
+  background: #128e81;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>

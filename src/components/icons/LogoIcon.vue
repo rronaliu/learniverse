@@ -1,0 +1,11 @@
+<template>
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="16" r="14" fill="#16a596" />
+    <path
+      d="M16 8v8l5 3"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+  </svg>
+</template>

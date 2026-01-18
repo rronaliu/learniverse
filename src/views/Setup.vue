@@ -149,7 +149,7 @@ const handleModalConfirm = () => {
   align-items: center;
   gap: 8px;
   background: #1a1a1a;
-  color: white;
+  color: #6fb3b8;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 16px;
@@ -167,11 +167,6 @@ const handleModalConfirm = () => {
   display: flex;
   gap: 16px;
   position: relative;
-  opacity: 0.4;
-}
-
-.step.completed {
-  opacity: 1;
 }
 
 .step:not(:last-child)::after {
@@ -188,8 +183,8 @@ const handleModalConfirm = () => {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #1a1a1a;
-  color: white;
+  background: #042223;
+  color: #6fb3b8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,7 +196,7 @@ const handleModalConfirm = () => {
 .step-content h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #042223;
   margin: 0 0 4px 0;
 }
 

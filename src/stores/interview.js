@@ -36,7 +36,7 @@ export const useInterviewStore = defineStore("interview", {
     currentQuestion: state => state.questions[state.currentQuestionIndex],
     progress: state =>
       Math.round(
-        ((state.currentQuestionIndex + 1) / state.questions.length) * 100
+        (state.currentQuestionIndex / (state.questions.length - 1)) * 100
       ),
     isFirstQuestion: state => state.currentQuestionIndex === 0,
     isLastQuestion: state =>

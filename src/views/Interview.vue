@@ -28,7 +28,7 @@
               v-if="!store.isFirstQuestion && showQuestionNumber"
               class="question-number"
             >
-              Question {{ store.currentQuestionIndex + 1 }}:
+              Question {{ store.currentQuestionIndex }}:
             </h2>
           </transition>
           <transition name="fade-slide">

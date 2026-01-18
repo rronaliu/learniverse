@@ -6,11 +6,12 @@
 
         <div class="score-section">
           <div class="score-badge">
-            <span class="badge-icon">🟠</span>
+            <span class="badge-icon"></span>
             <span class="badge-text">You are almost ready!</span>
           </div>
         </div>
-
+        <OrbRing size="medium" />
+        <OrbRing size="small" />
         <div class="advice-section">
           <h2>General Advice:</h2>
           <ol class="advice-list">
@@ -58,6 +59,7 @@ import { ref, computed } from "vue";
 import { useInterviewStore } from "../stores/interview";
 import Modal from "../components/Modal.vue";
 import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
+import OrbRing from "../components/OrbRing.vue";
 
 const store = useInterviewStore();
 const showModal = ref(false);
@@ -116,7 +118,11 @@ h1 {
 }
 
 .badge-icon {
-  font-size: 32px;
+  width: 15.81px;
+  height: 15.81px;
+  border-radius: 50%;
+  background-color: #feac4e;
+  box-shadow: 0px 0px 12.7px 0px #f28c4d;
 }
 
 .advice-section {
@@ -138,9 +144,8 @@ h1 {
 
 .advice-list li {
   counter-increment: advice-counter;
-  font-size: 20px;
-  line-height: 1.8;
-  margin-bottom: 16px;
+  font-size: 24px;
+  line-height: 32px;
   padding-left: 40px;
   position: relative;
 }
@@ -149,13 +154,14 @@ h1 {
   content: counter(advice-counter) ".";
   position: absolute;
   left: 0;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .btn-share {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: 6rem;
   background: white;
   color: #1a1a1a;
   border: none;

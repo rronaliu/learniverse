@@ -12,8 +12,8 @@
       </div>
       <div class="voice-interface">
         <div class="voice-orb">
-          <div class="orb-ring medium"></div>
-          <div class="orb-ring small"></div>
+          <OrbRing size="medium" />
+          <OrbRing size="small" />
           <div class="orb-glow"></div>
           <div class="orb-core">
             <VoiceWaveIcon />
@@ -58,7 +58,7 @@
                 class="btn-nav btn-next btn-next--first"
                 @click="store.nextQuestion"
               >
-                <ChevronRightIcon />
+                <ArrowUpRight />
                 Continue
               </button>
               <button
@@ -76,7 +76,7 @@
                 @click="handleContinue"
               >
                 Continue
-                <ChevronRightIcon />
+                <ArrowUpRight />
               </button>
               <button
                 v-else-if="!store.isFirstQuestion"
@@ -84,7 +84,7 @@
                 @click="goToResults"
               >
                 Submit
-                <ChevronRightIcon />
+                <ArrowUpRight />
               </button>
             </div>
           </div>
@@ -101,7 +101,8 @@ import { useSpeechRecognition } from "@vueuse/core";
 import { useInterviewStore } from "../stores/interview";
 import VoiceWaveIcon from "../components/icons/VoiceWaveIcon.vue";
 import ChevronLeftIcon from "../components/icons/ChevronLeftIcon.vue";
-import ChevronRightIcon from "../components/icons/ChevronRightIcon.vue";
+import ArrowUpRight from "../components/icons/ArrowUpRight.vue";
+import OrbRing from "../components/OrbRing.vue";
 
 const router = useRouter();
 const store = useInterviewStore();
@@ -301,29 +302,6 @@ const goToResults = () => {
   justify-content: center;
   box-shadow: 0 0 60px rgba(22, 165, 150, 0.6);
   z-index: 1;
-}
-
-.orb-ring {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #ffffff08;
-  border: 2px solid #d3d0d033;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.orb-ring.medium {
-  width: 846px;
-  height: 846px;
-  opacity: 30%;
-}
-.orb-ring.small {
-  width: 460px;
-  height: 460px;
-  opacity: 60%;
 }
 
 .btn-talk {
